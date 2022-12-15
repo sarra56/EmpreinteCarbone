@@ -1,8 +1,6 @@
 package utilisateur;
 import consocarbone.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
+import java.util.*;
 
 /**Classe qui contient, pour chaque utilisateur, ces informations concernant chaque poste de consommation.
 @author Watrin Claire
@@ -20,8 +18,8 @@ public class Utilisateur{
     private Transport transport;
     private ServicesPublics services;
 
-    private Collection<Logement> ColLogement;
-    private Collection<Transport> ColTransport;
+    private List<Logement> ColLogement = new LinkedList<Logement>();
+    private List<Transport> ColTransport = new LinkedList<Transport>();
 
     /**Constructeur par défaut*/
     public Utilisateur(){
@@ -40,46 +38,23 @@ public class Utilisateur{
         this.alimentation = alimentation;
         this.bienConso = bienConso;
         this.logement = logement;
+        colLogement.add(logement);
         this.transport = transport;
+        colTransport.add(transport);
         this.services = services;
         this.empreinte = this.calculerEmpreinte();
     }
 
-    public Utilisateur(Alimentation alimentation, BienConso bienConso, Collection<Logement> colLogement, Transport transport,ServicesPublics services){
-        this.id = i++;
-        this.alimentation = alimentation;
-        this.bienConso = bienConso;
-        this.transport = transport;
-        this.services = services;
-        this.colLogement = colLogement;
-        this.empreinte = this.calculerEmpreinte();
-        this.empreinte++(empreinteColLogement);
+    public void addToLogement(Logement l){
+        colLogement.add(l);
+        this.empreinte = this.empreinte + l.getImpact();
     }
 
-    public Utilisateur(Alimentation alimentation, BienConso bienConso, Logement logement, Collection<Transport> colTransport,ServicesPublics services){
-        this.id = i++;
-        this.alimentation = alimentation;
-        this.bienConso = bienConso;
-        this.logement = logement;
-        this.services = services;
-        this.colTransport = colTransport;
-        this.empreinte = this.calculerEmpreinte();
-        this.empreinte++(empreinteColTransport);
+    public void addToTransport(Transport t){
+        colTransport.add(t);
+        this.empreinte = this.empreinte + t.getImpact();
     }
 
-    public Utilisateur(Alimentation alimentation, BienConso bienConso, Logement logement, Collection<Transport> colTransport,ServicesPublics services){
-        this.id = i++;
-        this.alimentation = alimentation;
-        this.bienConso = bienConso;
-        this.logement = logement;
-        this.services = services;
-        this.colLogement = colLogement;
-        this.colTransport = colTransport;
-        this.empreinte = this.calculerEmpreinte();
-        this.empreinte++(empreinteColLogement);
-        this.empreinte++(empreinteColTransport);
-    }
- 
     public void setAlimentation(Alimentation a) {
         alimentation = a;
         alimentation.majImpact();
@@ -130,12 +105,12 @@ public class Utilisateur{
 	    return this.services;
     }
 
-    public Collection<Logement> getColLogement(){
-        return this.colLogement;
+    public LinkedList<Logement> getColLogement(){
+        return colLogement;
     }
 
-    public Collection<Transport> getColTransport(){
-        return this.colTransport;
+    public LinkedList<Transport> getColTransport(){
+        return colTransport;
     }
 
     public double getEmpreinte(){
@@ -185,7 +160,7 @@ public class Utilisateur{
         double empreinteTotale = 0;
         while(it.hasNext()){
             Logement l = it.next();
-            empreinteTotale++(l.getImpact());
+            empreinteTotale = empreinteTotale + l.getImpact();
         }
         return empreinteTotale;
     }
@@ -195,7 +170,7 @@ public class Utilisateur{
         double empreinteTotale = 0;
         while(it.hasNext()){
             Transport t = it.next();
-            empreinteTotale++(l.getImpact());
+            empreinteTotale = empreinteTotale + t.getImpact();
         }
         return empreinteTotale;
     }
