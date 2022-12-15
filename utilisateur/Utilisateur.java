@@ -18,8 +18,8 @@ public class Utilisateur{
     private Transport transport;
     private ServicesPublics services;
 
-    private List<Logement> ColLogement = new LinkedList<Logement>();
-    private List<Transport> ColTransport = new LinkedList<Transport>();
+    private List<Logement> colLogement;
+    private List<Transport> colTransport;
 
     /**Constructeur par défaut*/
     public Utilisateur(){
@@ -38,21 +38,33 @@ public class Utilisateur{
         this.alimentation = alimentation;
         this.bienConso = bienConso;
         this.logement = logement;
-        colLogement.add(logement);
         this.transport = transport;
-        colTransport.add(transport);
         this.services = services;
         this.empreinte = this.calculerEmpreinte();
+        this.colLogement = new LinkedList<Logement>();
+        this.colTransport = new LinkedList<Transport>();
+        this.colLogement.add(logement);
+        this.colTransport.add(transport);
     }
 
-    public void addToLogement(Logement l){
+    public void ajouterLogement(Logement l){
         colLogement.add(l);
         this.empreinte = this.empreinte + l.getImpact();
     }
 
-    public void addToTransport(Transport t){
+    public void ajouterTransport(Transport t){
         colTransport.add(t);
         this.empreinte = this.empreinte + t.getImpact();
+    }
+
+    public void retirerLogement(Logement l){ //exception a traiter : element qui n'appartient pas a la collection
+        colLogement.remove(l);
+        this.empreinte = this.empreinte - l.getImpact();
+    }
+
+    public void retirerTransport(Transport t){
+        colTransport.remove(t);
+        this.empreinte = this.empreinte - t.getImpact();
     }
 
     public void setAlimentation(Alimentation a) {
@@ -105,11 +117,11 @@ public class Utilisateur{
 	    return this.services;
     }
 
-    public LinkedList<Logement> getColLogement(){
+    public List<Logement> getColLogement(){
         return colLogement;
     }
 
-    public LinkedList<Transport> getColTransport(){
+    public List<Transport> getColTransport(){
         return colTransport;
     }
 
@@ -130,12 +142,18 @@ public class Utilisateur{
 
     /**Méthode qui affiche sur la console le détail de l'empreinte carbone de l'utilisateur*/
     public void detaillerEmpreinte(){
-        System.out.println("Détail de l'empreinte de l'utilisateur identifié "+this.id+" :\n");
+        System.out.println("\nDétail de l'empreinte de l'utilisateur identifié "+this.id+" :\n");
         System.out.println(this.alimentation.toString());
         System.out.println(this.bienConso.toString());
-        System.out.println(this.logement.toString());
-        System.out.println(this.transport.toString());
         System.out.println(this.services.toString());
+        System.out.println("Empreinte totale de la collection de logements : "+this.empreinteColLogement()+".Détail par logement :");
+        for (Logement l : colLogement){
+            System.out.println(l.toString());
+        }
+        System.out.println("Empreinte totale de la collection de transports : "+this.empreinteColTransport()+".Détail par transport :");
+        for (Transport t : colTransport){
+            System.out.println(t.toString());
+        }
         System.out.println("\nEmpreinte total : "+this.empreinte+"\n");
     }
     
@@ -144,32 +162,40 @@ public class Utilisateur{
         List<ConsoCarbone> listeConso = new ArrayList<ConsoCarbone>();
         listeConso.add(this.alimentation);
 	    listeConso.add(this.bienConso);
-	    listeConso.add(this.logement);
-	    listeConso.add(this.transport);
-	    listeConso.add(this.services);
+        listeConso.add(this.services);
+	    //listeConso.add(this.logement);
+	    //listeConso.add(this.transport);
+        for (Logement l : colLogement){
+            listeConso.add(l);
+        }
+        for (Transport t : colTransport){
+            listeConso.add(t);
+        }
         Collections.sort(listeConso);
-        System.out.println("Détail de l'empreinte de l'utilisateur identifié "+this.id+" par odre croissant : \n");
+        System.out.println("\nDétail de l'empreinte de l'utilisateur identifié "+this.id+" par odre croissant :");
 	    for(int i=0; i<listeConso.size(); i++) {
             System.out.println(listeConso.get(i).toString());
 	    }
 	    System.out.println("Conseils pour un mode de vie plus durable :\nConcernant les transport, préférez les déplacements à pieds, en vélo ou en transports en commun lorque cela est possible, et achetez un véhicule qui consomme moins.\nConcernant l'alimentation, mangez local, le moins de produits provenant d'animaux possible, et évitez au maximum le gaspillage.\nConcernant le logement : optimisez le chauffage, contrôlez l'étanchéité des ouvertures, choisissez bien votre électroménager, économisez l'eau et éclairez de manière raisonnée.\nConcernant les biens de consommation : choisissez des marques écoresponsables, achetez des produits utiles et qui vont durer dans le temps.\n");
     }
 
+    /**Méthode qui calcule l'empreinte carbone de la collection de logements de l'utilisateur.
+    @return la valeur de l'empreinte carbone
+    */
     public double empreinteColLogement(){
-        Iterator<Logement> it = colLogement.iterator();
         double empreinteTotale = 0;
-        while(it.hasNext()){
-            Logement l = it.next();
+        for (Logement l : colLogement){
             empreinteTotale = empreinteTotale + l.getImpact();
         }
         return empreinteTotale;
     }
 
+    /**Méthode qui calcule l'empreinte carbone de la collection de transports de l'utilisateur.
+    @return la valeur de l'empreinte carbone
+    */
     public double empreinteColTransport(){
-        Iterator<Transport> it = colTransport.iterator();
         double empreinteTotale = 0;
-        while(it.hasNext()){
-            Transport t = it.next();
+       for (Transport t : colTransport){
             empreinteTotale = empreinteTotale + t.getImpact();
         }
         return empreinteTotale;
