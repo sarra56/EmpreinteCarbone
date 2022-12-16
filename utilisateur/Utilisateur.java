@@ -140,6 +140,18 @@ public class Utilisateur{
         return (this.alimentation.getImpact() + this.bienConso.getImpact() + this.logement.getImpact() + this.transport.getImpact() + this.services.getImpact());
     }
 
+    /**Méthode qui met à jour l'empreinte de l'utilisateur.*/
+    public void majEmpreinte(){
+        double somme = 0;
+        for (Logement l : colLogement){
+            somme = somme + l.getImpact();
+        }
+        for (Transport t : colTransport){
+            somme = somme + t.getImpact();
+        }
+        this.empreinte = somme + this.alimentation.getImpact() + this.bienConso.getImpact() + this.services.getImpact();
+    }
+
     /**Méthode qui affiche sur la console le détail de l'empreinte carbone de l'utilisateur*/
     public void detaillerEmpreinte(){
         System.out.println("\nDétail de l'empreinte de l'utilisateur identifié "+this.id+" :\n");

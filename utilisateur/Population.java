@@ -41,7 +41,7 @@ public class Population{
         for (Utilisateur u : population){
           somme = somme + u.getEmpreinte();
         }
-        empreinteMoyenne = somme/taille;
+        this.empreinteMoyenne = somme/taille;
     }
   
     public double getEmpreinteMoyenne(){
@@ -71,6 +71,7 @@ public class Population{
                     l.setCe(CE2);
                 }
             }
+            u.majEmpreinte();
         }
         this.majEmpreinteMoyenne();
     }
@@ -83,6 +84,7 @@ public class Population{
         while(it.hasNext()){
             Utilisateur u = it.next();
             (u.getAlimentation()).setTxBoeuf(txBoeuf);
+            u.majEmpreinte();
         }
         this.majEmpreinteMoyenne();
     }
@@ -97,8 +99,11 @@ public class Population{
             Iterator<Transport> it2 = (u.getColTransport()).iterator();
             while(it2.hasNext()){
                 Transport t = it2.next();
-                t.setKilomAnnee(kilomAnnee);
+                if (t.getKilomAnnee() > kilomAnnee){
+                    t.setKilomAnnee(kilomAnnee);
+                }
             }
+            u.majEmpreinte();
         }
         this.majEmpreinteMoyenne();
     }
@@ -115,7 +120,8 @@ public class Population{
             if (u.getEmpreinte() >= empreinteActuelle){
                 BienConso b = u.getBienConso();
                 b.setMontant(depenseReduite);
-            } 
+            }
+            u.majEmpreinte(); 
         }
         this.majEmpreinteMoyenne();
     }
