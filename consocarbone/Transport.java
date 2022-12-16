@@ -52,7 +52,7 @@ public class Transport extends ConsoCarbone{
         this.majImpact();
     }
 
-    public void setKilomnAnnee(int kilomnAnnee){
+    public void setKilomAnnee(int kilomnAnnee){
         this.kilomAnnee=kilomAnnee;
         this.majImpact();
     }
