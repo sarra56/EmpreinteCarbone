@@ -19,7 +19,7 @@ public class Transport extends ConsoCarbone{
         this.kilomAnnee=kilomAnnee;
         this.amortissement=amortissement;
         if (possede){
-            this.impact=(kilomAnnee*0.00193)+((taille.getEmission())/amortissement);
+            this.impact=(kilomAnnee*0.000193)+((taille.getEmission())/amortissement);
         }
         else{
             this.impact=0;
@@ -65,7 +65,7 @@ public class Transport extends ConsoCarbone{
     @Override
     public void majImpact(){
         if (this.possede){
-            this.impact=(this.kilomAnnee*0.00193)+((this.taille.getEmission())/(this.amortissement));
+            this.impact=(this.kilomAnnee*0.000193)+((this.taille.getEmission())/(this.amortissement));
         }
         else{
             this.impact=0;

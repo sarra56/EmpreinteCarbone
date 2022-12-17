@@ -142,14 +142,7 @@ public class Utilisateur{
 
     /**Méthode qui met à jour l'empreinte de l'utilisateur.*/
     public void majEmpreinte(){
-        double somme = 0;
-        for (Logement l : colLogement){
-            somme = somme + l.getImpact();
-        }
-        for (Transport t : colTransport){
-            somme = somme + t.getImpact();
-        }
-        this.empreinte = somme + this.alimentation.getImpact() + this.bienConso.getImpact() + this.services.getImpact();
+        this.empreinte = this.alimentation.getImpact() + this.bienConso.getImpact() + this.services.getImpact() + this.empreinteColTransport() + this.empreinteColLogement();
     }
 
     /**Méthode qui affiche sur la console le détail de l'empreinte carbone de l'utilisateur*/
@@ -175,8 +168,6 @@ public class Utilisateur{
         listeConso.add(this.alimentation);
 	    listeConso.add(this.bienConso);
         listeConso.add(this.services);
-	    //listeConso.add(this.logement);
-	    //listeConso.add(this.transport);
         for (Logement l : colLogement){
             listeConso.add(l);
         }
@@ -207,7 +198,7 @@ public class Utilisateur{
     */
     public double empreinteColTransport(){
         double empreinteTotale = 0;
-       for (Transport t : colTransport){
+        for (Transport t : colTransport){
             empreinteTotale = empreinteTotale + t.getImpact();
         }
         return empreinteTotale;

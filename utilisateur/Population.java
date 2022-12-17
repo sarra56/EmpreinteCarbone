@@ -41,7 +41,7 @@ public class Population{
         for (Utilisateur u : population){
           somme = somme + u.getEmpreinte();
         }
-        this.empreinteMoyenne = somme/taille;
+        this.empreinteMoyenne = somme/this.taille;
     }
   
     public double getEmpreinteMoyenne(){
@@ -113,7 +113,7 @@ public class Population{
     @param empreinteActuelle : seuil à partir duquel on considère que l'empreinte est trop élevée.
     @param depenseReduite : montant des dépenses que l'on va imposer à l'utilisateur. 
     */
-    public void limiteDepenses(double empreinteActuelle, double depenseReduite){
+    public void mesureDepenses(double empreinteActuelle, double depenseReduite){
         Iterator<Utilisateur> it = population.iterator();
         while(it.hasNext()){
             Utilisateur u = it.next();
@@ -122,6 +122,20 @@ public class Population{
                 b.setMontant(depenseReduite);
             }
             u.majEmpreinte(); 
+        }
+        this.majEmpreinteMoyenne();
+    }
+
+    public void mesureAmortissement(int amortissement){
+        Iterator<Utilisateur> it = population.iterator();
+        while(it.hasNext()){
+            Utilisateur u = it.next();
+            Iterator<Transport> it2 = (u.getColTransport()).iterator();
+            while(it2.hasNext()){
+                Transport t = it2.next();
+                t.setAmortissement(amortissement);
+            }
+            u.majEmpreinte();
         }
         this.majEmpreinteMoyenne();
     }
