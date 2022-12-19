@@ -1,6 +1,7 @@
 package utilisateur;
 import consocarbone.*;
 import java.util.*;
+import java.io.*;
 
 /**Classe qui contient, pour chaque utilisateur, ces informations concernant chaque poste de consommation.
 @author Watrin Claire
@@ -45,6 +46,154 @@ public class Utilisateur{
         this.colTransport = new LinkedList<Transport>();
         this.colLogement.add(logement);
         this.colTransport.add(transport);
+    }
+
+    /**Constructeur qui initialise un utilisateur à partir d'un fichier texte
+    @param file_path le chemin vers le fichier 
+    */
+
+    public Utilisateur(String file_path) throws IOException{
+        this.id = i++;
+        this.empreinte = 0;
+        boolean[] apparait = {false,false,false,false};
+        try{ 
+            File inFile = new File(file_path);
+            System.out.println("Lecture du fichier " + file_path);
+            BufferedReader reader = new BufferedReader(new FileReader(inFile)); 
+            String ligne = reader.readLine();
+            while (ligne != null){
+                String[] mots = ligne.split(" ");
+                String classe = mots[0];
+                int i = Utilisateur.appartientA(classe);
+                if (i >= 0){
+                    if (i == 0){
+                        if (apparait[i]==false){
+                            apparait[i]=true;
+                            double tx1 = Double.parseDouble(mots[2]);
+                            double tx2 = Double.parseDouble(mots[3]);
+                            Alimentation alimentation = new Alimentation(tx1,tx2);
+                            this.alimentation = alimentation;
+                        }
+                        else{
+                            System.out.println("Alimentation ne peut pas apparaitre plus d'une fois dans le fichier\n");
+                        }
+                    }
+                    if (i == 1){
+                        if (apparait[i]==false){
+                            apparait[i]=true;
+                            double m = Double.parseDouble(mots[2]);
+                            BienConso bienConso = new BienConso(m);
+                            this.bienConso = bienConso;
+                        }
+                        else{
+                            System.out.println("BienConso ne peut pas apparaitre plus d'une fois dans le fichier\n");
+                        }
+                    }
+                    if (i == 2){
+                        int s = Integer.parseInt(mots[2]);
+                        CE ce = CE.A;
+                        int cpt=0;
+                        if (mots[3].equals("A")){
+                            ce = CE.A;
+                            cpt=1;
+                        }
+                        if (mots[3].equals("B")){
+                            ce = CE.B;
+                            cpt=1;
+                        }
+                        if (mots[3].equals("C")){
+                            ce = CE.C;
+                            cpt=1;
+                        }
+                        if (mots[3].equals("D")){
+                            ce = CE.D;
+                            cpt=1;
+                        }
+                        if (mots[3].equals("E")){
+                            ce = CE.E;
+                            cpt=1;
+                        }
+                        if (mots[3].equals("F")){
+                            ce = CE.F;
+                            cpt=1;
+                        }
+                        if (mots[3].equals("G")){
+                            ce = CE.G;
+                            cpt=1;
+                        }
+                        if (cpt == 0){
+                            System.out.println("Classe énergétique inexistante\n"); //erreur
+                        }
+                        Logement logement = new Logement(s,ce);
+                        if (apparait[i]==false){
+                            apparait[i]=true;
+                            this.logement = logement;
+                            this.colLogement = new LinkedList<Logement>();
+                            this.colLogement.add(logement);
+                        }   
+                        else {
+                            this.ajouterLogement(logement);
+                        }
+                    }
+                    if (i == 3){
+                        boolean p = true;
+                        int cpt = 0;
+                        if (mots[2].equals("false")){
+                            p = false;
+                        }
+                        Taille t = Taille.P;
+                        if (mots[3].equals("P")){
+                            t = Taille.P;
+                            cpt = 1;
+                        }
+                        if (mots[3].equals("G")){
+                            t = Taille.G;
+                            cpt = 1;
+                        }
+                        if (cpt == 0){
+                            System.out.println("Taille inexistante\n"); //erreur 
+                        }
+                        int k = Integer.parseInt(mots[4]);
+                        int a = Integer.parseInt(mots[5]);
+                        Transport transport = new Transport(p,t,k,a);
+                        if (apparait[i]==false){
+                            apparait[i]=true;
+                            this.transport = transport;
+                            this.colTransport = new LinkedList<Transport>();
+                            this.colTransport.add(transport);
+                        }
+                        else {
+                            this.ajouterTransport(transport);
+                        }
+                    }
+                }
+                else{
+                    System.out.println("Nom de classe non reconnu\n"); //erreur
+                }
+                ligne = reader.readLine();
+            }
+            if (apparait[0] && apparait[1] && apparait[2] && apparait[3]){
+                this.services = ServicesPublics.getInstance();
+                this.empreinte = this.empreinte + this.calculerEmpreinte();
+            }
+            else{
+                System.out.println("Un des attributs n'est pas présent dans le fichier. L'utilisateur correspondant ne peut pas être crée.\n"); //erreur
+            }
+        } 
+        catch(IOException e){
+            System.out.println("une erreur est apparu\n");
+            e.printStackTrace();
+        }
+    }
+
+    public static int appartientA(String nom){
+        String[] classes = {"Alimentation","BienConso","Logement","Transport"};
+        for (int i =0; i<classes.length; i++){
+            if (classes[i].equals(nom)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void ajouterLogement(Logement l){
