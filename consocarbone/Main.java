@@ -1,7 +1,7 @@
 package consocarbone;
 
 public class Main{
-    public static void main(String[] args){
+    public static void main(String[] args) throws ExceptionTaux{
         Logement l = new Logement(26,CE.B);
         Alimentation a = new Alimentation(0.5,0.5);
         Transport t = new Transport(true,Taille.P,100,2);
