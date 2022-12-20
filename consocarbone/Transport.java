@@ -44,7 +44,12 @@ public class Transport extends ConsoCarbone{
 
     public void setPossede(boolean possede){
         this.possede=possede;
-        this.majImpact();
+        if (possede == false){
+            this.impact=0;
+        }
+        else{
+            this.majImpact();
+        }
     }
 
     public void setTaille(Taille taille){
