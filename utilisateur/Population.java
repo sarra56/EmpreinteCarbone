@@ -9,7 +9,7 @@ import java.util.*;
 
 public class Population{
     private List<Utilisateur> population;
-    private double empreinteMoyenne;
+    private double empreinteMoyenne; //empreinte moyenne de la population
     private int taille; //taille de la population
   
     public Population(){
@@ -56,9 +56,9 @@ public class Population{
       return this.population;
     }
   
-    /**methode imposant à tous les utilisateur vivant dans des logements de type CE1 de les rénover pour passer au type CE2.
-    @param CE1 : 
-    @param CE2 : 
+    /**Méthode imposant à tous les utilisateur vivant dans des logements de type CE1 de les rénover pour passer au type CE2.
+    @param CE1 classe énergétique des logements à rénover
+    @param CE2 nouvelle classe énergétique 
     */
     public void renove(CE CE1,CE CE2){
         Iterator<Utilisateur> it = population.iterator();
@@ -126,6 +126,9 @@ public class Population{
         this.majEmpreinteMoyenne();
     }
 
+    /**Méthode imposant un certain amortissement aux utilisateurs de la population possédant au moins une voiture.
+    @param amortissement : l'amortissement à imposer.
+    */
     public void mesureAmortissement(int amortissement){
         Iterator<Utilisateur> it = population.iterator();
         while(it.hasNext()){
