@@ -49,14 +49,16 @@ public class Utilisateur{
     }
 
     /**Constructeur qui initialise un utilisateur à partir d'un fichier texte
-    @param file_path le chemin vers le fichier 
+    @param file_path le chemin vers le fichier
+    @throws IOException si
+    @throws 
     */
-
-    public Utilisateur(String file_path) throws IOException{
+    public Utilisateur(String file_path) throws IOException, IllegalArgumentException, IllegalClassNameException, CException, TailleException, MissingClassException{
         this.id = i++;
         this.empreinte = 0;
         boolean[] apparait = {false,false,false,false};
-        try{ 
+        int l = 1; //numero de ligne dans le fichier .txt
+        try{
             File inFile = new File(file_path);
             System.out.println("Lecture du fichier " + file_path);
             BufferedReader reader = new BufferedReader(new FileReader(inFile)); 
@@ -75,7 +77,7 @@ public class Utilisateur{
                             this.alimentation = alimentation;
                         }
                         else{
-                            System.out.println("Alimentation ne peut pas apparaitre plus d'une fois dans le fichier\n");
+                            throw new IllegalArgumentException();
                         }
                     }
                     if (i == 1){
@@ -86,7 +88,7 @@ public class Utilisateur{
                             this.bienConso = bienConso;
                         }
                         else{
-                            System.out.println("BienConso ne peut pas apparaitre plus d'une fois dans le fichier\n");
+                            throw new IllegalArgumentException();
                         }
                     }
                     if (i == 2){
@@ -122,7 +124,7 @@ public class Utilisateur{
                             cpt=1;
                         }
                         if (cpt == 0){
-                            System.out.println("Classe énergétique inexistante\n"); //erreur
+                            throw new CException();
                         }
                         Logement logement = new Logement(s,ce);
                         if (apparait[i]==false){
@@ -151,7 +153,7 @@ public class Utilisateur{
                             cpt = 1;
                         }
                         if (cpt == 0){
-                            System.out.println("Taille inexistante\n"); //erreur 
+                            throw new TailleException();
                         }
                         int k = Integer.parseInt(mots[4]);
                         int a = Integer.parseInt(mots[5]);
@@ -168,21 +170,48 @@ public class Utilisateur{
                     }
                 }
                 else{
-                    System.out.println("Nom de classe non reconnu\n"); //erreur
+                    throw new IllegalClassNameException();
                 }
                 ligne = reader.readLine();
+                l++;
             }
             if (apparait[0] && apparait[1] && apparait[2] && apparait[3]){
                 this.services = ServicesPublics.getInstance();
                 this.empreinte = this.empreinte + this.calculerEmpreinte();
             }
             else{
-                System.out.println("Un des attributs n'est pas présent dans le fichier. L'utilisateur correspondant ne peut pas être crée.\n"); //erreur
+                throw new MissingClassException();
             }
-        } 
-        catch(IOException e){
-            System.out.println("une erreur est apparu\n");
+        }
+        catch(MissingClassException m){
+            System.out.println("Les classes suivantes n'apparaissent pas dans le fichier :\n");
+            String[] classes = {"Alimentation","BienConso","Logement","Transport"};
+            for(i=0; i<4; i++){
+                if (apparait[i] == false){
+                    System.out.println(classes[i]);
+                }
+            }
+            m.printStackTrace();
+        }
+        catch(IllegalClassNameException e){
+            System.out.println("Nom de classe non reconnu à la ligne "+ l);
             e.printStackTrace();
+        }
+        catch(CException c){
+            System.out.println("Classe énergétique du logement non reconnue à la ligne "+ l); 
+            c.printStackTrace();
+        }
+        catch(TailleException t){
+            System.out.println("Taille du véhicule inscrite non reconnue à la ligne "+ l);
+            t.printStackTrace();
+        }
+        catch(IOException o){
+            System.out.println("Une erreur dans l'ouverture/lecture du fichier est apparue.Veuillez vous assurez du chemin entré.\n");
+            o.printStackTrace();
+        }
+        catch(IllegalArgumentException a){
+            System.out.println("La classe à la ligne "+l+" apparait plus d'une fois dans le fichier.\n");
+            a.printStackTrace();
         }
     }
 

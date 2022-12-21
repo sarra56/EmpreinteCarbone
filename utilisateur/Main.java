@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Main{
-	public static void main(String[] args)throws ExceptionTaux {
+	public static void main(String[] args){
 		    int numMenu = 0;
 		    Scanner sc = new Scanner(System.in);
 		    do{
