@@ -35,6 +35,7 @@ public class BienConso extends ConsoCarbone{
 		    montant2 = sc.nextDouble();
 		    this.montant=montant2;
             this.impact=(this.montant)/1750;
+            i.printStackTrace();
         }
     }
 
@@ -64,6 +65,7 @@ public class BienConso extends ConsoCarbone{
 		    montant2 = sc.nextDouble();
 		    this.montant=montant2;
             this.majImpact();
+            i.printStackTrace();
         }
     }
 

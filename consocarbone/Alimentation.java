@@ -44,6 +44,7 @@ public class Alimentation extends ConsoCarbone{
             this.txBoeuf=txBoeuf2;
             this.txVege=txVege2;
             this.impact=(k1*txBoeuf2) + k2*(1-txVege2-txBoeuf2) + (k3*txVege2);
+            i.printStackTrace();
         }
     }
 
@@ -82,6 +83,7 @@ public class Alimentation extends ConsoCarbone{
 		    txBoeuf2 = sc.nextDouble();
             this.txBoeuf = txBoeuf2;
             this.majImpact();
+            i.printStackTrace();
         }
     }
 
@@ -112,6 +114,7 @@ public class Alimentation extends ConsoCarbone{
 		    txVege2 = sc.nextDouble();
             this.txVege = txVege2;
             this.majImpact();
+            i.printStackTrace();
         }
     }
 

@@ -24,16 +24,31 @@ public class Population{
         this.majEmpreinteMoyenne();
     }
   
-    public void addUser(Utilisateur u){
+    public void ajouterUtilisateur(Utilisateur u){
         population.add(u);
         taille = taille+1;
         this.majEmpreinteMoyenne();
     }
   
-    public void removeUser(Utilisateur u){
-        population.remove(u);
-        taille = taille-1;
-        this.majEmpreinteMoyenne();
+    /**Méthode qui permet de retirer un des utilisateurs de la population
+    @param u l'utilisateur à retirer
+    @throws IllegalArgumentxception si u n'est pas présent dans la collection d'utilisateurs
+    */
+    public void retirerUtilisateur(Utilisateur u) throws IllegalArgumentException{
+        try{
+            boolean sup = population.remove(u);
+            if (sup == true){
+                taille = taille-1;
+                this.majEmpreinteMoyenne();
+            }
+            else{
+                throw new IllegalArgumentException();
+            }
+        }
+        catch(IllegalArgumentException e){
+            System.out.println("Exception dans retirerUtilisateur : l'utilisateur que vous souhaitez retirer n'appartient pas à la collection d'utilisateurs de cette population !");
+            e.printStackTrace();
+        }
     }
   
     public void majEmpreinteMoyenne(){

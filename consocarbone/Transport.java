@@ -81,6 +81,7 @@ public class Transport extends ConsoCarbone{
 		        this.kilomAnnee=k2;
             }
             this.impact=(kilomAnnee*0.000193)+((taille.getEmission())/amortissement);
+            e.printStackTrace();
         }
     }
 
@@ -137,6 +138,7 @@ public class Transport extends ConsoCarbone{
 		    k2 = sc.nextInt();
 		    this.kilomAnnee=k2;
             this.majImpact();
+            i.printStackTrace();
         }
     }
 
@@ -162,6 +164,7 @@ public class Transport extends ConsoCarbone{
 		    amortissement2 = sc.nextInt();
 		    this.amortissement=amortissement2;
             this.majImpact();
+            i.printStackTrace();
         }
     }
 

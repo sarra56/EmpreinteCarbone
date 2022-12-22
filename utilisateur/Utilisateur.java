@@ -49,9 +49,14 @@ public class Utilisateur{
     }
 
     /**Constructeur qui initialise un utilisateur à partir d'un fichier texte
+    Les exceptions de type paramètres négatifs sont traitées dans chacun des constructeurs 
     @param file_path le chemin vers le fichier
-    @throws IOException si
-    @throws 
+    @throws IOException 
+    @throws IllegalArgumentException si la classe Alimentation ou BienConso apparait plus d'une fois dans le fichier 
+    @throws IllegalClassNameException si une classe inscrite sur le fichier n'est pas reconnue
+    @throws CException si une classe énergétique inscrite sur le fichier n'est pas reconnue
+    @throws TailleException si une taille de voiture inscrite sur le fichier n'est pas reconnue
+    @throws MissingClassException si une classe n'apparait pas dans le fichier 
     */
     public Utilisateur(String file_path) throws IOException, IllegalArgumentException, IllegalClassNameException, CException, TailleException, MissingClassException{
         this.id = i++;
@@ -234,15 +239,44 @@ public class Utilisateur{
         colTransport.add(t);
         this.empreinte = this.empreinte + t.getImpact();
     }
-
-    public void retirerLogement(Logement l){ //exception a traiter : element qui n'appartient pas a la collection
-        colLogement.remove(l);
-        this.empreinte = this.empreinte - l.getImpact();
+    /**Méthode qui permet de retirer un des logements de la collection de logements de l'utilisateur
+    @param l le logement à retirer
+    @throws IllegalArgumentxception si l n'est pas présent dans la collection de logements de l'utilisateur 
+    */
+    public void retirerLogement(Logement l) throws IllegalArgumentException{
+        try{
+            boolean sup = colLogement.remove(l);
+            if (sup == true){
+                this.empreinte = this.empreinte - l.getImpact();
+            }
+            else{
+                throw new IllegalArgumentException();
+            }
+        }
+        catch(IllegalArgumentException e){
+            System.out.println("Exception dans retirerLogement : l'objet que vous souhaitez retirer n'appartient pas à de la collection de logements !");
+            e.printStackTrace();
+        }
     }
 
-    public void retirerTransport(Transport t){
-        colTransport.remove(t);
-        this.empreinte = this.empreinte - t.getImpact();
+    /**Méthode qui permet de retirer un des transports de la collection de transports de l'utilisateur
+    @param t le transport à retirer
+    @throws IllegalArgumentException si t n'est pas présent dans la collection de transports de l'utilisateur 
+    */
+    public void retirerTransport(Transport t) throws IllegalArgumentException{
+        try{
+            boolean sup = colTransport.remove(t);
+            if (sup == true){
+                this.empreinte = this.empreinte - t.getImpact();
+            }
+            else{
+                throw new IllegalArgumentException();
+            }
+        }
+        catch(IllegalArgumentException e){
+            System.out.println("Exception dans retirerTransport : l'objet que vous souhaitez retirer n'appartient pas à de la collection de transports !");
+            e.printStackTrace();
+        }
     }
 
     public void setAlimentation(Alimentation a) {

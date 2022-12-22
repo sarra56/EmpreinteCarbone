@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Main{
-	public static void main(String[] args){
+	public static void main(String[] args) throws Exception{
 		    int numMenu = 0;
 		    Scanner sc = new Scanner(System.in);
 		    do{
@@ -129,6 +129,8 @@ public class Main{
 			}
 			
 			} while (!(numMenu==0));
+			Utilisateur u = new Utilisateur("utilisateur/utilisateur.txt");
+        	System.out.println("empreinte : " + u.getEmpreinte());
 		}
 	
 }

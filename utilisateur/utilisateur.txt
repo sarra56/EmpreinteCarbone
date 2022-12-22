@@ -1,6 +1,5 @@
 BienConso : 2000
-Alimentation : 0.3 0.2
+Alimentation : -0.3 0.2
 Logement : 30 A
 Logement : 40 B
 Transport : true P 1000 5
-BienConso : 5000

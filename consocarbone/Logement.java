@@ -38,6 +38,7 @@ public class Logement extends ConsoCarbone{
 		    this.superficie=superficie2;
             this.ce=ce;
             this.impact=(ce.getCoef())*(this.superficie);
+            i.printStackTrace();
         }
     }
 
@@ -71,6 +72,7 @@ public class Logement extends ConsoCarbone{
 		    superficie2 = sc.nextInt();
 		    this.superficie=superficie2;
             this.majImpact();
+            i.printStackTrace();
         }
     }
 
