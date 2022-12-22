@@ -1,2 +1,0 @@
-# EmpreinteCarbone
-Projet Java
